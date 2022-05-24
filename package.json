@@ -1,0 +1,27 @@
+{
+  "name": "bookkeeping-accounts",
+  "version": "1.0.0",
+  "description": "Bookkeeping Accounts application built on the MERN stack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gleammer/bookkeeping-accounts.git"
+  },
+  "keywords": [
+    "mern"
+  ],
+  "author": "Radu Chirilov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gleammer/bookkeeping-accounts/issues"
+  },
+  "homepage": "https://github.com/Gleammer/bookkeeping-accounts#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
