@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const accountSchema = new mongoose.Schema(
     {
         code: {
-            type: Integer,
+            type: Number,
             required: [true, "Please provide a unique code"],
             unique: true,
         },
