@@ -11,6 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/api/v1.0/accounts', require('./routes/accountRoutes'))
+app.use('/api/v1.0/rules', require('./routes/ruleRoutes'))
 
 app.get('/', (req, res) => res.send({message: "Basic express dev environment."}))
 
