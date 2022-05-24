@@ -13,9 +13,9 @@ const getRules = asyncHandler(async (req, res) => {
 //  @desc   Create Rule
 //  @route  POST /api/v1.0/rules
 const createRule = asyncHandler(async (req, res) => {
-    const { debitCode, creditCode, name } = req.body;
+    const { debitCode, creditCode, condition } = req.body;
 
-    if (!debitCode || !creditCode || !name) {
+    if (!debitCode || !creditCode || !condition) {
         res.status(400);
         throw new Error("Please provide all fields");
     }
@@ -23,7 +23,7 @@ const createRule = asyncHandler(async (req, res) => {
     const rule = await Rule.create({
         debitCode: req.body.debitCode,
         creditCode: req.body.creditCode,
-        name: req.body.name,
+        condition: req.body.condition,
     });
 
     res.status(201).json(rule);

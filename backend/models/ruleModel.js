@@ -12,7 +12,7 @@ const ruleSchema = new mongoose.Schema(
             required: [true, "Please provide the Credit Account code"],
             ref: 'Account'
         },
-        name: {
+        condition: {
             type: String,
             required: true,
         },
