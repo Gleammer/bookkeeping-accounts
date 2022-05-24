@@ -10,6 +10,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+app.use('/api/v1.0/accounts', require('./routes/accountRoutes'))
+
 app.get('/', (req, res) => res.send({message: "Basic express dev environment."}))
 
 app.listen(port, () => console.log(`Server started on port ${port}`))
