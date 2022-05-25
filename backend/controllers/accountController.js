@@ -10,6 +10,17 @@ const getAccounts = asyncHandler(async (req, res) => {
     res.status(200).json(accounts);
 });
 
+const getAccountById = asyncHandler(async (req, res) => {
+    const account = await Account.findById(req.params.id);
+
+    if (!account) {
+        res.status(404);
+        throw new Error("No Account with such id found!");
+    }
+
+    res.status(200).json(account);
+});
+
 //  @desc   Create Account
 //  @route  POST /api/v1.0/accounts
 const createAccount = asyncHandler(async (req, res) => {
@@ -28,5 +39,6 @@ const createAccount = asyncHandler(async (req, res) => {
 
 module.exports = {
     getAccounts,
+    getAccountById,
     createAccount,
 };
