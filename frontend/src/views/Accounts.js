@@ -16,9 +16,9 @@ const Accounts = () => {
 
     return (
         <Container>
-            <Row>
+            <Row className="my-5">
                 <Col>
-                    <h1>This is Accounts page!</h1>
+                    <h1>List of Accounts:</h1>
                     {accounts.map(account => <Account key={account._id} id={account._id} code={account.code} name={account.name}/>)}
                 </Col>
             </Row>
