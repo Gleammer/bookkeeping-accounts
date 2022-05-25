@@ -19,7 +19,7 @@ const Accounts = () => {
             <Row>
                 <Col>
                     <h1>This is Accounts page!</h1>
-                    {accounts.map(account => <Account id={account._id} code={account.code} name={account.name}/>)}
+                    {accounts.map(account => <Account key={account._id} id={account._id} code={account.code} name={account.name}/>)}
                 </Col>
             </Row>
         </Container>
