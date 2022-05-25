@@ -5,7 +5,7 @@ const Rule = require("../models/ruleModel");
 //  @desc   Get list of Rules
 //  @route  GET /api/v1.0/rules
 const getRules = asyncHandler(async (req, res) => {
-    const accounts = await Rule.find();
+    const accounts = await Rule.find(req.query);
 
     res.status(200).json(accounts);
 });
