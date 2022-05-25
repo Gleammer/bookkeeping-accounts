@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import Account from "../components/Account";
 
 const Accounts = () => {
     const [accounts, setAccounts] = useState([]);
@@ -8,7 +9,8 @@ const Accounts = () => {
     useEffect(() => {
         axios
             .get("http://localhost:5000/api/v1.0/accounts")
-            .then((res) => console.log(res))
+            .then((res) => res.data)
+            .then((res) => setAccounts(res))
             .catch((err) => console.warn(err));
     }, []);
 
@@ -17,6 +19,7 @@ const Accounts = () => {
             <Row>
                 <Col>
                     <h1>This is Accounts page!</h1>
+                    {accounts.map(account => <Account id={account._id} code={account.code} name={account.name}/>)}
                 </Col>
             </Row>
         </Container>
