@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,10 +24,13 @@
   },
   "homepage": "https://github.com/Gleammer/bookkeeping-accounts#readme",
   "dependencies": {
+    "concurrently": "^7.2.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-async-handler": "^1.2.0",
-    "mongoose": "^6.3.4"
+    "mongoose": "^6.3.4",
+    "react-csv-reader": "^3.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
