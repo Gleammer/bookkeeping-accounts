@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CSVReader from "react-csv-reader";
+import axios from "axios";
 
 const Homepage = () => {
     const [data, setData] = useState([]);
     const [file, setFile] = useState();
 
-    const handleUpload = (data, fileInfo) => {
-        setData(data);
+    const handleUpload = (fileData, fileInfo) => {
+        setData(fileData.map((elem) => ({ code: elem[0], name: elem[1] })));
         setFile(fileInfo);
     };
 
-    const handleImport = () => {
-        console.log(file)
-    }
+    const handleImport = async () => {
+        //data.map((account) => console.log(account));
+
+        const res = await Promise.allSettled(data.map(account => axios.post(`http://localhost:5000/api/v1.0/accounts`, account)))
+        console.log(res)
+    };
 
     return (
         <Container className="my-5">
@@ -23,16 +27,18 @@ const Homepage = () => {
                     <hr />
                     <h4>Import CSV file:</h4>
                     <CSVReader
-                        onFileLoaded={(data, fileInfo, originalFile) =>
-                            handleUpload(data, fileInfo)
+                        onFileLoaded={(fileData, fileInfo, originalFile) =>
+                            handleUpload(fileData, fileInfo)
                         }
                     />
                     {data.length ? (
                         <>
-                            <br/>
+                            <br />
                             <h6>File name: {file.name}</h6>
                             <p>The imported file has {data.length} elements</p>
-                            <button onClick={handleImport}>Import Accounts</button>
+                            <button onClick={handleImport}>
+                                Import Accounts
+                            </button>
                         </>
                     ) : null}
                 </Col>
