@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Homepage = () => {
     const [data, setData] = useState([]);
+    const [response, setResponse] = useState([]);
     const [file, setFile] = useState();
 
     const handleUpload = (fileData, fileInfo) => {
@@ -12,11 +13,12 @@ const Homepage = () => {
         setFile(fileInfo);
     };
 
-    const handleImport = async () => {
-        //data.map((account) => console.log(account));
-
-        const res = await Promise.allSettled(data.map(account => axios.post(`http://localhost:5000/api/v1.0/accounts`, account)))
-        console.log(res)
+    const handleImport = () => {
+        Promise.allSettled(
+            data.map((account) =>
+                axios.post(`http://localhost:5000/api/v1.0/accounts`, account)
+            )
+        ).then((res) => setResponse(res));
     };
 
     return (
@@ -35,10 +37,37 @@ const Homepage = () => {
                         <>
                             <br />
                             <h6>File name: {file.name}</h6>
-                            <p>The imported file has {data.length} elements</p>
+                            <p>The imported file has {data.length} lines</p>
                             <button onClick={handleImport}>
                                 Import Accounts
                             </button>
+                            <div className="import-response">
+                                {response.length !== 0 ? (
+                                    <>
+                                        <br />
+                                        <p>
+                                            Successful:{" "}
+                                            {
+                                                response.filter(
+                                                    (elem) =>
+                                                        elem.status !==
+                                                        "rejected"
+                                                ).length
+                                            }
+                                        </p>
+                                        <p>
+                                            Rejected:{" "}
+                                            {
+                                                response.filter(
+                                                    (elem) =>
+                                                        elem.status ===
+                                                        "rejected"
+                                                ).length
+                                            }
+                                        </p>
+                                    </>
+                                ) : null}
+                            </div>
                         </>
                     ) : null}
                 </Col>
