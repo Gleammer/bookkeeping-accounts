@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import Rule from "../components/Rule";
 
 const Accounts = () => {
     const [rules, setRules] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const { register, handleSubmit } = useForm();
 
     useEffect(() => {
         let endpoints = [
@@ -22,17 +24,14 @@ const Accounts = () => {
         );
     }, []);
 
-    const handleChange = (e) => {
-        console.log(e);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (data) => {
+        console.log(data);
     };
 
     return (
         <Container>
             <Row className="my-5">
+                {/* List Rules */}
                 <Col>
                     <h1>List of Rules:</h1>
                     {rules.length === 0 ? (
@@ -49,10 +48,14 @@ const Accounts = () => {
                         ))
                     )}
                 </Col>
+                {/* Create Rule */}
                 <Col>
                     <p>Create rule:</p>
-                    <form>
-                        <select onChange={handleChange}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <select {...register("creditCode", { required: true })}>
+                            <option disabled selected value>
+                                -- Credit --
+                            </option>
                             {accounts.map((account) => (
                                 <option value={account.code}>
                                     {account.code}
@@ -60,7 +63,10 @@ const Accounts = () => {
                             ))}
                         </select>{" "}
                         <ArrowRight />{" "}
-                        <select onChange={handleChange}>
+                        <select {...register("debitCode", { required: true })}>
+                            <option disabled selected value>
+                                -- Debit --
+                            </option>
                             {accounts.map((account) => (
                                 <option value={account.code}>
                                     {account.code}
@@ -68,8 +74,13 @@ const Accounts = () => {
                             ))}
                         </select>
                         <br />
-                        <input type="text" placeholder="Condition" />
-                        <button onClick={handleSubmit}>Create Rule</button>
+                        <br />
+                        <input
+                            type="text"
+                            placeholder="Condition"
+                            {...register("condition", { required: true })}
+                        />
+                        <button type="submit">Create Rule</button>
                     </form>
                 </Col>
             </Row>
