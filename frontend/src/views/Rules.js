@@ -8,7 +8,22 @@ import Rule from "../components/Rule";
 const Accounts = () => {
     const [rules, setRules] = useState([]);
     const [accounts, setAccounts] = useState([]);
-    const { register, handleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            creditCode: null,
+            debitCode: null,
+            condition: "",
+        },
+    });
+
+    const validateDifference = () => {
+        return getValues("creditCode") !== getValues("debitCode");
+    };
 
     useEffect(() => {
         let endpoints = [
@@ -56,25 +71,51 @@ const Accounts = () => {
                 <Col>
                     <p>Create rule:</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <select {...register("creditCode", { required: true })}>
-                            <option disabled selected value>
+                        <select
+                            name="creditCode"
+                            {...register("creditCode", {
+                                required: true,
+                                validate: validateDifference,
+                            })}
+                            defaultValue={null}
+                        >
+                            <option disabled value>
                                 -- Credit --
                             </option>
+                            {accounts.map((account) => (
+                                <option key={account._id} value={account._id}>
+                                    {account.code}
+                                </option>
+                            ))}
                         </select>{" "}
                         <ArrowRight />{" "}
-                        <select {...register("debitCode", { required: true })}>
-                            <option disabled selected value>
+                        <select
+                            name="debitCode"
+                            {...register("debitCode", { required: true })}
+                            defaultValue={null}
+                        >
+                            <option disabled value>
                                 -- Debit --
                             </option>
+                            {accounts.map((account) => (
+                                <option key={account._id} value={account._id}>
+                                    {account.code}
+                                </option>
+                            ))}
                         </select>
-                        <br />
-                        <br />
                         <input
                             type="text"
                             placeholder="Condition"
+                            className="form-control my-2 mr-1"
                             {...register("condition", { required: true })}
                         />
-                        <button type="submit">Create Rule</button>
+                        <button type="submit" class="btn btn-primary">
+                            Create Rule
+                        </button>
+                        {errors.creditCode &&
+                            errors.creditCode.type === "validate" && (
+                                <div className="error">Credit code and Debit code should be different</div>
+                            )}
                     </form>
                 </Col>
             </Row>
