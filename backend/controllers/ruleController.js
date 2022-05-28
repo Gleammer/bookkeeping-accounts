@@ -80,6 +80,7 @@ const deleteRule = asyncHandler(async (req, res) => {
 
 module.exports = {
     getRules,
+    getRuleById,
     createRule,
     updateRule,
     deleteRule,
