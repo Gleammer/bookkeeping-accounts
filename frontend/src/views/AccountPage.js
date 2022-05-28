@@ -32,7 +32,7 @@ const AccountPage = () => {
             .then((res) => res.data)
             .then((res) => setCreditRules(res))
             .catch((err) => console.warn(err));
-    }, []);
+    }, [id]);
 
     return (
         <Container>
@@ -63,7 +63,7 @@ const AccountPage = () => {
                     <h6>List of Rules as Credit Account (assets out)</h6>
                     <ul>
                         {creditRules.map((rule) => (
-                            <li  key={rule._id}>
+                            <li key={rule._id}>
                                 <Rule
                                     id={rule._id}
                                     debitCode={rule.debitCode.code}

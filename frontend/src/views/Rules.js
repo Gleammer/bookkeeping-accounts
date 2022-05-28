@@ -26,6 +26,10 @@ const Accounts = () => {
 
     const onSubmit = (data) => {
         console.log(data);
+        axios
+            .post("http://localhost:5000/api/v1.0/rules", data)
+            .then((res) => console.log(res))
+            .catch((err) => console.warn(err));
     };
 
     return (
@@ -41,8 +45,8 @@ const Accounts = () => {
                             <Rule
                                 key={rule._id}
                                 id={rule._id}
-                                debitCode={rule.debitCode}
-                                creditCode={rule.creditCode}
+                                creditCode={rule.creditCode.code}
+                                debitCode={rule.debitCode.code}
                                 condition={rule.condition}
                             />
                         ))
@@ -56,22 +60,12 @@ const Accounts = () => {
                             <option disabled selected value>
                                 -- Credit --
                             </option>
-                            {accounts.map((account) => (
-                                <option value={account.code}>
-                                    {account.code}
-                                </option>
-                            ))}
                         </select>{" "}
                         <ArrowRight />{" "}
                         <select {...register("debitCode", { required: true })}>
                             <option disabled selected value>
                                 -- Debit --
                             </option>
-                            {accounts.map((account) => (
-                                <option value={account.code}>
-                                    {account.code}
-                                </option>
-                            ))}
                         </select>
                         <br />
                         <br />
