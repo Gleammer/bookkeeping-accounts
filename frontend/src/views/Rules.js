@@ -12,6 +12,7 @@ const Accounts = () => {
         register,
         handleSubmit,
         getValues,
+        formState,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -78,6 +79,7 @@ const Accounts = () => {
                                 validate: validateDifference,
                             })}
                             defaultValue={null}
+                            disabled={formState.isSubmitting}
                         >
                             <option disabled value>
                                 -- Credit --
@@ -93,6 +95,7 @@ const Accounts = () => {
                             name="debitCode"
                             {...register("debitCode", { required: true })}
                             defaultValue={null}
+                            disabled={formState.isSubmitting}
                         >
                             <option disabled value>
                                 -- Debit --
@@ -108,14 +111,23 @@ const Accounts = () => {
                             placeholder="Condition"
                             className="form-control my-2 mr-1"
                             {...register("condition", { required: true })}
+                            disabled={formState.isSubmitting}
                         />
                         <button type="submit" class="btn btn-primary">
                             Create Rule
                         </button>
                         {errors.creditCode &&
                             errors.creditCode.type === "validate" && (
-                                <div className="error">Credit code and Debit code should be different</div>
+                                <div className="error">
+                                    Credit code and Debit code should be
+                                    different
+                                </div>
                             )}
+                        {formState.isSubmitted && (
+                            <div className="success">
+                                Form submitted successfully
+                            </div>
+                        )}
                     </form>
                 </Col>
             </Row>
