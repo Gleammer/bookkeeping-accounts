@@ -23,13 +23,39 @@ const RulePage = () => {
                     {data && (
                         <h2>
                             {data.creditCode.code} <ArrowRight />{" "}
-                            {data.debitCode.code} | data.condition
+                            {data.debitCode.code} | {data.condition}
                         </h2>
                     )}
                 </Col>
             </Row>
             <Row className="mb-5">
-                <Col></Col>
+                <Col>
+                    {data && (
+                        <>
+                            <p>Data about Accounts:</p>
+                            <Row>
+                                <Col>
+                                    <p>
+                                        <b>Credit Account:</b>
+                                        <br />
+                                        Code: {data.creditCode.code}
+                                        <br />
+                                        Name: {data.creditCode.name}
+                                    </p>
+                                </Col>
+                                <Col>
+                                    <p>
+                                        <b>Debit Account:</b>
+                                        <br />
+                                        Code: {data.debitCode.code}
+                                        <br />
+                                        Name: {data.debitCode.name}
+                                    </p>
+                                </Col>
+                            </Row>
+                        </>
+                    )}
+                </Col>
             </Row>
         </Container>
     );
