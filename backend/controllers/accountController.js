@@ -10,6 +10,8 @@ const getAccounts = asyncHandler(async (req, res) => {
     res.status(200).json(accounts);
 });
 
+//  @desc   Get Account by id
+//  @route  GET /api/v1.0/accounts/:id
 const getAccountById = asyncHandler(async (req, res) => {
     const account = await Account.findById(req.params.id);
 
