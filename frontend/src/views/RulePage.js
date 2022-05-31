@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
 
@@ -22,8 +22,9 @@ const RulePage = () => {
                 <Col>
                     {data && (
                         <h2>
-                            {data.creditCode.code} <ArrowRight />{" "}
-                            {data.debitCode.code} | {data.condition}
+                            <Link to={"/accounts/" + data.creditCode._id}>{data.creditCode.code}</Link>
+                            <ArrowRight />
+                            <Link to={"/accounts/" + data.debitCode._id}>{data.debitCode.code}</Link>
                         </h2>
                     )}
                 </Col>
