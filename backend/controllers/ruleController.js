@@ -56,9 +56,7 @@ const updateRule = asyncHandler(async (req, res) => {
         throw new Error("Rule not found!");
     }
 
-    const updatedRule = await Rule.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-    });
+    const updatedRule = await Rule.findByIdAndUpdate(req.params.id, req.body);
 
     res.status(200).json(updatedRule);
 });
