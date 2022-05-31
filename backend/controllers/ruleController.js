@@ -5,9 +5,26 @@ const Rule = require("../models/ruleModel");
 //  @desc   Get list of Rules
 //  @route  GET /api/v1.0/rules
 const getRules = asyncHandler(async (req, res) => {
-    const rules = await Rule.find(req.query).populate("debitCode", "code name").populate("creditCode", "code name");
+    const rules = await Rule.find(req.query)
+        .populate("debitCode", "code name")
+        .populate("creditCode", "code name");
 
     res.status(200).json(rules);
+});
+
+//  @desc   Get Rule by id
+//  @route  GET /api/v1.0/rules/:id
+const getRuleById = asyncHandler(async (req, res) => {
+    const rule = await Rule.findById(req.params.id)
+        .populate("debitCode", "code name")
+        .populate("creditCode", "code name");
+
+    if (!rule) {
+        res.status(404);
+        throw new Error("Nu Rule with such id found!");
+    }
+
+    res.status(200).json(rule);
 });
 
 //  @desc   Create Rule
@@ -39,9 +56,7 @@ const updateRule = asyncHandler(async (req, res) => {
         throw new Error("Rule not found!");
     }
 
-    const updatedRule = await Rule.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-    });
+    const updatedRule = await Rule.findByIdAndUpdate(req.params.id, req.body);
 
     res.status(200).json(updatedRule);
 });
@@ -63,6 +78,7 @@ const deleteRule = asyncHandler(async (req, res) => {
 
 module.exports = {
     getRules,
+    getRuleById,
     createRule,
     updateRule,
     deleteRule,
