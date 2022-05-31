@@ -3,29 +3,63 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
+import RuleForm from "../components/RuleForm";
 
 const RulePage = () => {
     let { id } = useParams();
     const [data, setData] = useState();
+    const [accounts, setAccounts] = useState([]);
 
     useEffect(() => {
+        let endpoints = [
+            `http://localhost:5000/api/v1.0/rules/${id}`,
+            "http://localhost:5000/api/v1.0/accounts",
+        ];
+
+        Promise.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+            ([{ data: rule }, { data: accounts }]) => {
+                setData(rule);
+                setAccounts(accounts);
+            }
+        );
+    }, [id]);
+
+    const getNewData = () => {
         axios
             .get(`http://localhost:5000/api/v1.0/rules/${id}`)
             .then((res) => res.data)
             .then((res) => setData(res))
             .catch((err) => console.warn(err));
-    }, [id]);
+    };
+
+    const onSubmit = (data) => {
+        console.log(data);
+        axios
+            .put(`http://localhost:5000/api/v1.0/rules/${id}`, data)
+            .then((res) => {
+                console.log(res);
+                getNewData();
+            })
+            .catch((err) => console.warn(err));
+    };
 
     return (
         <Container>
             <Row className="my-5">
                 <Col>
                     {data && (
-                        <h2>
-                            <Link to={"/accounts/" + data.creditCode._id}>{data.creditCode.code}</Link>
-                            <ArrowRight />
-                            <Link to={"/accounts/" + data.debitCode._id}>{data.debitCode.code}</Link>
-                        </h2>
+                        <>
+                            <h2>
+                                <Link to={"/accounts/" + data.creditCode._id}>
+                                    {data.creditCode.code}
+                                </Link>
+                                <ArrowRight />
+                                <Link to={"/accounts/" + data.debitCode._id}>
+                                    {data.debitCode.code}
+                                </Link>
+                            </h2>
+                            <h5>{data.condition}</h5>
+                        </>
                     )}
                 </Col>
             </Row>
@@ -55,6 +89,18 @@ const RulePage = () => {
                                 </Col>
                             </Row>
                         </>
+                    )}
+                </Col>
+            </Row>
+            <Row className="my-5">
+                <Col>
+                    <hr />
+                    {accounts.length && (
+                        <RuleForm
+                            accounts={accounts}
+                            submitHandler={onSubmit}
+                            buttonText={"Update Rule"}
+                        />
                     )}
                 </Col>
             </Row>

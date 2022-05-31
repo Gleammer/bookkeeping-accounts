@@ -66,7 +66,7 @@ const RuleForm = (props) => {
                 disabled={formState.isSubmitting}
             />
             <button type="submit" className="btn btn-primary">
-                Create Rule
+                {props.buttonText || "Create Rule"}
             </button>
             {errors.creditCode && errors.creditCode.type === "validate" && (
                 <div className="error">
