@@ -1,30 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { ArrowRight } from "react-bootstrap-icons";
-import { useForm } from "react-hook-form";
 import axios from "axios";
 import Rule from "../components/Rule";
+import RuleForm from "../components/RuleForm";
 
 const Accounts = () => {
     const [rules, setRules] = useState([]);
     const [accounts, setAccounts] = useState([]);
-    const {
-        register,
-        handleSubmit,
-        getValues,
-        formState,
-        formState: { errors },
-    } = useForm({
-        defaultValues: {
-            creditCode: null,
-            debitCode: null,
-            condition: "",
-        },
-    });
-
-    const validateDifference = () => {
-        return getValues("creditCode") !== getValues("debitCode");
-    };
 
     useEffect(() => {
         let endpoints = [
@@ -38,7 +20,7 @@ const Accounts = () => {
                 setAccounts(accounts);
             }
         );
-    }, []);
+    }, []); //make initial requests
 
     const onSubmit = (data) => {
         console.log(data);
@@ -71,64 +53,12 @@ const Accounts = () => {
                 {/* Create Rule */}
                 <Col>
                     <p>Create rule:</p>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <select
-                            name="creditCode"
-                            {...register("creditCode", {
-                                required: true,
-                                validate: validateDifference,
-                            })}
-                            defaultValue={null}
-                            disabled={formState.isSubmitting}
-                        >
-                            <option disabled value>
-                                -- Credit --
-                            </option>
-                            {accounts.map((account) => (
-                                <option key={account._id} value={account._id}>
-                                    {account.code}
-                                </option>
-                            ))}
-                        </select>{" "}
-                        <ArrowRight />{" "}
-                        <select
-                            name="debitCode"
-                            {...register("debitCode", { required: true })}
-                            defaultValue={null}
-                            disabled={formState.isSubmitting}
-                        >
-                            <option disabled value>
-                                -- Debit --
-                            </option>
-                            {accounts.map((account) => (
-                                <option key={account._id} value={account._id}>
-                                    {account.code}
-                                </option>
-                            ))}
-                        </select>
-                        <input
-                            type="text"
-                            placeholder="Condition"
-                            className="form-control my-2 mr-1"
-                            {...register("condition", { required: true })}
-                            disabled={formState.isSubmitting}
+                    {accounts.length && (
+                        <RuleForm
+                            accounts={accounts}
+                            submitHandler={onSubmit}
                         />
-                        <button type="submit" class="btn btn-primary">
-                            Create Rule
-                        </button>
-                        {errors.creditCode &&
-                            errors.creditCode.type === "validate" && (
-                                <div className="error">
-                                    Credit code and Debit code should be
-                                    different
-                                </div>
-                            )}
-                        {formState.isSubmitted && (
-                            <div className="success">
-                                Form submitted successfully
-                            </div>
-                        )}
-                    </form>
+                    )}
                 </Col>
             </Row>
         </Container>
