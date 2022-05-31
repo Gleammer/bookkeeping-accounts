@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
 import RuleForm from "../components/RuleForm";
@@ -9,6 +9,7 @@ const RulePage = () => {
     let { id } = useParams();
     const [data, setData] = useState();
     const [accounts, setAccounts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let endpoints = [
@@ -41,6 +42,19 @@ const RulePage = () => {
                 getNewData();
             })
             .catch((err) => console.warn(err));
+    };
+
+    const deleteRule = () => {
+        let text = "Delete Rule?";
+        if (window.confirm(text)) {
+            axios
+                .delete(`http://localhost:5000/api/v1.0/rules/${id}`)
+                .then((res) => {
+                    console.log(res);
+                    navigate("/rules/");
+                })
+                .catch((err) => console.warm(err));
+        }
     };
 
     return (
@@ -93,8 +107,8 @@ const RulePage = () => {
                 </Col>
             </Row>
             <Row className="my-5">
+                <hr />
                 <Col>
-                    <hr />
                     {accounts.length && (
                         <RuleForm
                             accounts={accounts}
@@ -102,6 +116,11 @@ const RulePage = () => {
                             buttonText={"Update Rule"}
                         />
                     )}
+                </Col>
+                <Col>
+                    <button className="btn btn-danger" onClick={deleteRule}>
+                        Delete Rule
+                    </button>
                 </Col>
             </Row>
         </Container>
