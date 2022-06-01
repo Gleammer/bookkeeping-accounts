@@ -5,7 +5,11 @@ const Footer = () => {
     return (
         <Navbar bg="dark">
             <Container>
-                <a href="#" className="text-light">
+                <a
+                    href="https://github.com/Gleammer/bookkeeping-accounts"
+                    className="text-light"
+                    target="_blank"
+                >
                     <Github /> See source code
                 </a>
             </Container>
